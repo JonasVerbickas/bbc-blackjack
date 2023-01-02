@@ -5,12 +5,12 @@ import random
 
 
 class Deck:
+    """A deck has a list of cards and can deal a card."""
     def __init__(self):
         self.cards = self.generate_shuffled_list_of_cards()
 
     @staticmethod
     def generate_shuffled_list_of_cards():
-        """Generates a shuffled list of cards"""
         cards = []
         for s in Suit:
             for r in Rank:
@@ -20,3 +20,6 @@ class Deck:
         random.shuffle(cards)
         print("After shuffle", cards)
         return cards
+    
+    def deal(self):
+        return self.cards.pop()
