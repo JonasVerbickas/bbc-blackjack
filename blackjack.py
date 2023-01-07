@@ -1,8 +1,22 @@
 from src.dealer import Dealer
 from src.player import Player
 from src.player_choice import PlayerChoice
-from src.player_status import PlayerStatus
+import src.config as config
+from enum import Enum
+import time
 import os
+
+class RoundOutcome(Enum):
+    """A player status has a name and a value."""
+    PLAYER_WON = 1
+    DEALER_WON = 2
+    TIE = 3
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class BlackJack:
@@ -12,64 +26,65 @@ class BlackJack:
         
     def allow_to_hit(self, player: Player) -> int:
         """Allows the player to hit until they stand or bust"""
-        self.draw_board()
-        while player.hand.value < 21 and player.get_input() == PlayerChoice.HIT:
+        # 1. allow player to hit until they stand or bust
+        while player.hand.value < config.BLACKJACK and player.get_input() == PlayerChoice.HIT:
             dealt_card = self.dealer.deal_card()
             print(f"{player.name} hits and gets {dealt_card}")
             player.hand.add_card(dealt_card)
+            # sleep for 0.5 seconds if dealer is hitting for a dramatic effect
+            if player.__class__.__name__ == "Dealer":
+                time.sleep(0.5)
             self.draw_board()
-
         return player.hand.value
-    
-    def eval_standing(self, player: Player):
-        """Evaluates the standing of the player"""
-        if player.hand.value > 21:
-            print(f"{player.name} busts")
-            return PlayerStatus.BUSTED
-        elif player.hand.value == 21:
-            print(f"{player.name} wins")
-            return PlayerStatus.WON
-        else:
-            print(f"{player.name} stands")
-            return PlayerStatus.STAND
     
     def draw_board(self):
         """Draws the board"""
         os.system('cls' if os.name == 'nt' else 'clear')
-        print(f"Player hand:\n{self.player.ascii_hand()}")
-        print(f"Dealer hand:\n{self.dealer.ascii_hand()}")
+        print(f"Player's hand:\n{self.player.ascii_hand()}")
+        print(f"Dealer's hand:\n{self.dealer.ascii_hand()}")
  
     def play_round(self):
         """Plays a round of blackjack"""
+        # 0. Initialize hands
         self.dealer.new_hand(self.dealer.deal_hand())
         self.player.new_hand(self.dealer.deal_hand())
         self.draw_board()
-        self.allow_to_hit(self.player)
-        self.eval_standing(self.player)
-
-        if self.player.hand.value > 21:
-            print("Player busts")
-        elif self.player.hand.value == 21:
-            print("Player wins")
-        else:
-            print("Player stands")
-            self.allow_to_hit(self.dealer)
-            if self.dealer.hand.value > 21:
-                print("Dealer busts")
-            elif self.dealer.hand.value == 21:
-                print("Dealer wins")
+        # 1. Check if player has blackjack 
+        if self.player.hand.value == config.BLACKJACK:
+            if self.player.hand.value == self.dealer.hand.value:
+                return RoundOutcome.TIE
             else:
-                print("Dealer stands")
-                if self.dealer.hand.value > self.player.hand.value:
-                    print("Dealer wins")
-                else:
-                    print("Player wins")
+                return RoundOutcome.PLAYER_WON
+
+        # 2. If not, allow player to hit until they stand or bust
+        self.allow_to_hit(self.player)
+
+        # 3. If player busts, dealer wins
+        if self.player.hand.value > config.BLACKJACK:
+            return RoundOutcome.DEALER_WON
+
+        # 4. If player stands, allow dealer to hit until they stand or bust
+        self.allow_to_hit(self.dealer)
+
+        # 5. If dealer busts, player wins
+        if self.dealer.hand.value > config.BLACKJACK:
+            return RoundOutcome.PLAYER_WON
+        
+        # 6. If dealer stands, compare hands and determine winner
+        if self.dealer.hand.value > self.player.hand.value:
+            return RoundOutcome.DEALER_WON
+        elif self.dealer.hand.value < self.player.hand.value:
+            return RoundOutcome.PLAYER_WON
+        else:
+            return RoundOutcome.TIE
+
 
 
 def play():
     """Plays a game of blackjack"""
     game = BlackJack()
-    game.play_round()
+    outcome = game.play_round()
+    print(outcome)
 
 if __name__ == '__main__':
     play()
