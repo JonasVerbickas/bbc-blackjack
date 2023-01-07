@@ -10,7 +10,11 @@ class Card:
         self.rank = rank
 
     def get_value(self) -> int:
-        return max(self.rank.value, 10)
+        # ace will be made to have value of 1 inside `hand.py`
+        if self.rank == Rank.ACE:
+            return 11
+        else:
+            return min(self.rank.value, 10)
 
     def __str__(self) -> str:
         return self.rank.name + " of " + self.suit.name
