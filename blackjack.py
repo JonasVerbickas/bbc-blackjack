@@ -14,7 +14,8 @@ class BlackJack:
             dealt_card = self.dealer.deal_card()
             print(f"{player.name} hits and gets {dealt_card}")
             player.hand.add_card(dealt_card)
-            print(f"Now {player.name} has {player.hand}")
+            print(f"Now {player.name} has\n{player.ascii_hand()}")
+
         return player.hand.value
     
     def eval_standing(self, player: Player):
@@ -33,8 +34,8 @@ class BlackJack:
         """Plays a round of blackjack"""
         self.dealer.new_hand(self.dealer.deal_hand())
         self.player.new_hand(self.dealer.deal_hand())
-        print("Player hand: ", self.player.hand)
-        print("Dealer hand: ", self.dealer.hand)
+        print(f"Player hand:\n{self.player.ascii_hand()}")
+        print(f"Dealer hand:\n{self.dealer.ascii_hand()}")
         self.allow_to_hit(self.player)
         self.eval_standing(self.player)
 
