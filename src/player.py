@@ -10,7 +10,7 @@ class Player:
         self.bet = 0
         self.hand: Hand = None
 
-    def ascii_list_of_cards(self, cards: list[Card]) -> list[str]:
+    def _ascii_list_of_cards(self, cards: list[Card]) -> list[str]:
         """
         Instead of a boring text version of the card we render an ASCII image of the card.
         Implementation taken from: https://codereview.stackexchange.com/questions/82103/ascii-fication-of-playing-cards
@@ -29,11 +29,11 @@ class Player:
             lines[6] += ('└─────────┘')
         return lines
     
-    def ascii_hand(self):
-        return "\n".join(self.ascii_list_of_cards(self.hand.cards))
+    def get_ascii_hand_str(self) -> str:
+        return "\n".join(self._ascii_list_of_cards(self.hand.cards))
     
-    def new_hand(self, hand: Hand) -> None:
-        """Discards the old hand and receives a new one"""
+    def set_hand(self, hand: Hand) -> None:
+        """Discards the old hand and receives a new hand"""
         self.hand = hand
     
     def get_move(self) -> PlayerChoice:
@@ -43,12 +43,16 @@ class Player:
             choice = input(f"Make a decision: {[str(c) for c in PlayerChoice]}: ")
         return PlayerChoice(int(choice))
     
-    def get_bet(self):
-        """Gets the bet from the player"""
+    def get_bet(self) -> None:
+        """Gets the bet from the player using CLI"""
         bet = None
-        while bet is None or (bet > self.balance or bet < 0):
+        while bet is None or (bet > self.balance or bet <= config.MIN_BET):
             try:
-                bet = int(input(f"Your balance={self.balance} | Enter your bet: "))
+                bet = int(input(f"Your balance={self.balance} | Enter your bet (minimum {config.MIN_BET}): "))
             except ValueError:
                 print("Please enter a number")
         self.bet = bet
+
+    def print_ascii_hand_with_score(self) -> None:
+        print(self.get_ascii_hand_str())
+        print(f"Cards held by {self.name} and valued at {self.hand.value} points")

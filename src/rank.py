@@ -3,7 +3,6 @@ from enum import Enum
 
 class Rank(Enum):
     """A rank has a name and a value."""
-
     ACE = 1
     TWO = 2
     THREE = 3
@@ -18,7 +17,8 @@ class Rank(Enum):
     QUEEN = 12
     KING = 13
 
-    def short_unicode_repr(self):
+    def short_unicode_repr(self) -> str:
+        """Used to display the card using ascii art."""
         if self == Rank.ACE:
             return 'A'
         elif self == Rank.JACK:
@@ -30,8 +30,8 @@ class Rank(Enum):
         else:
             return str(self.value)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.name

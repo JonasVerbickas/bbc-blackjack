@@ -4,6 +4,9 @@ from enum import Enum
 from . import config
 
 class AceStatus(Enum):
+    """
+    Used to describe the status of the ace in a hand and allow for according score adjustments.
+    """
     NO_ACE = 1
     SOFT = 2
     HARD = 3
@@ -16,6 +19,9 @@ class Hand:
         self.value = 0
     
     def add_card(self, card: Card):
+        """
+        Append a card to the hand and adjust the value of the hand accordingly.
+        """
         self.value += card.get_value()
         if card.rank == Rank.ACE:
             self.ace_status = AceStatus.SOFT

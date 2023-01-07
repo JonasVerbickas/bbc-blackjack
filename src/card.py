@@ -10,6 +10,10 @@ class Card:
         self.rank = rank
 
     def get_value(self) -> int:
+        """
+        Returns the value of the card.
+        i.e. rank adjusted according to the game rules.
+        """
         # ace will be made to have value of 1 inside `hand.py`
         if self.rank == Rank.ACE:
             return 11
@@ -17,7 +21,7 @@ class Card:
             return min(self.rank.value, 10)
 
     def __str__(self) -> str:
-        return self.suit.short_unicode_repr() + self.rank.name 
+        return self.suit.short_unicode_repr() + self.rank.short_unicode_repr() 
 
     def __repr__(self) -> str:
         return self.__str__()

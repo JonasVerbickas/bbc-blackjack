@@ -9,13 +9,17 @@ class Suit(Enum):
     HEARTS = 3
     SPADES = 4
 
-    def short_unicode_repr(self):
+    def short_unicode_repr(self) -> str:
+        """
+        To make the hand more readable I use unicode symbols to represent the suit.
+        (it also helps if a reduce the amount of printed text whenever debugging lists of cards)
+        """
         map_to_unicode = "♠♦♥♣"
         return map_to_unicode[self.value-1]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.short_unicode_repr()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.__str__()
 
