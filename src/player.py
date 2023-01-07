@@ -9,7 +9,7 @@ class Player:
         self.bet = 0
         self.hand: Hand = None
 
-    def ascii_list_of_cards(self, cards: list[Card]):
+    def ascii_list_of_cards(self, cards: list[Card]) -> list[str]:
         """
         Instead of a boring text version of the card we render an ASCII image of the card.
         Implementation taken from: https://codereview.stackexchange.com/questions/82103/ascii-fication-of-playing-cards
@@ -17,7 +17,7 @@ class Player:
         # create an empty list of list, each sublist is a line
         lines = ["" for _ in range(7)]
         for index, card in enumerate(cards):
-            space = '' if card.rank.value == 10 else " " 
+            space = '' if card.rank.value == 10 else ' ' 
             # add the individual card on a line by line basis
             lines[0] += ('┌─────────┐')
             lines[1] += ('│{}{}       │'.format(card.rank.short_unicode_repr(), space))  # use two {} one for char, one for space or char

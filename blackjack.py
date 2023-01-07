@@ -2,6 +2,8 @@ from src.dealer import Dealer
 from src.player import Player
 from src.player_choice import PlayerChoice
 from src.player_status import PlayerStatus
+import os
+
 
 class BlackJack:
     def __init__(self):
@@ -10,11 +12,12 @@ class BlackJack:
         
     def allow_to_hit(self, player: Player) -> int:
         """Allows the player to hit until they stand or bust"""
-        while player.get_input() == PlayerChoice.HIT and player.hand.value < 21:
+        self.draw_board()
+        while player.hand.value < 21 and player.get_input() == PlayerChoice.HIT:
             dealt_card = self.dealer.deal_card()
             print(f"{player.name} hits and gets {dealt_card}")
             player.hand.add_card(dealt_card)
-            print(f"Now {player.name} has\n{player.ascii_hand()}")
+            self.draw_board()
 
         return player.hand.value
     
@@ -29,13 +32,18 @@ class BlackJack:
         else:
             print(f"{player.name} stands")
             return PlayerStatus.STAND
+    
+    def draw_board(self):
+        """Draws the board"""
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print(f"Player hand:\n{self.player.ascii_hand()}")
+        print(f"Dealer hand:\n{self.dealer.ascii_hand()}")
  
     def play_round(self):
         """Plays a round of blackjack"""
         self.dealer.new_hand(self.dealer.deal_hand())
         self.player.new_hand(self.dealer.deal_hand())
-        print(f"Player hand:\n{self.player.ascii_hand()}")
-        print(f"Dealer hand:\n{self.dealer.ascii_hand()}")
+        self.draw_board()
         self.allow_to_hit(self.player)
         self.eval_standing(self.player)
 
