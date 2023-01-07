@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class Suit(Enum):
-    """A suit has a name and a value."""
+    """Even though suit doesn't matter in score calculation I use it to visuallize the hand."""
 
     CLUBS = 1
     DIAMONDS = 2

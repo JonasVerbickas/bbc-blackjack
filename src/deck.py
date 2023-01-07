@@ -16,10 +16,11 @@ class Deck:
             for r in Rank:
                 card = Card(s, r)
                 cards.append(card)
-        print("Before shuffle", cards)
         random.shuffle(cards)
-        print("After shuffle", cards)
         return cards
     
-    def deal(self):
+    def deal_card(self) -> Card:
         return self.cards.pop()
+    
+    def __len__(self):
+        return len(self.cards)
