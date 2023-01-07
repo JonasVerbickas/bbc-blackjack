@@ -12,7 +12,7 @@ class Player:
     def ascii_list_of_cards(self, cards: list[Card]):
         """
         Instead of a boring text version of the card we render an ASCII image of the card.
-        :param cards: One or more card objects
+        Implementation taken from: https://codereview.stackexchange.com/questions/82103/ascii-fication-of-playing-cards
         """
         # create an empty list of list, each sublist is a line
         lines = ["" for _ in range(7)]

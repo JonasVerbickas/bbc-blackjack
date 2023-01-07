@@ -23,9 +23,8 @@ class Dealer(Player):
 
     def ascii_version_of_hidden_card(self):
         """
-        Essentially the dealers method of print ascii cards. This method hides the first card, shows it flipped over
-        :param cards: A list of card objects, the first will be hidden
-        :return: A string, the nice ascii version of cards
+        Essentially the dealers method of print ascii cards. This method hides the first card, shows it flipped over.
+        Implementation taken from https://codereview.stackexchange.com/questions/82103/ascii-fication-of-playing-cards.
         """
         # a flipper over card. # This is a list of lists instead of a list of string becuase appending to a list is better then adding a string
         lines = ['┌─────────┐', '│░░░░░░░░░│', '│░░░░░░░░░│', '│░░░░░░░░░│', '│░░░░░░░░░│', '│░░░░░░░░░│',  '└─────────┘']
