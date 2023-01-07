@@ -6,6 +6,7 @@ from src.suit import Suit
 
 class HandTestCase(unittest.TestCase):
 	"""
+	!!=====WARNING=====!!
 	These tests were designed with regular blackjack rules in mind.
 	Altering the blackjack rules may cause these tests to fail
 	e.g. changing the threshold for a blackjack to be something other than 21.
@@ -27,10 +28,9 @@ class HandTestCase(unittest.TestCase):
 		self.assertEqual(self.hand.value, 13)
 		self.assertEqual(self.hand.ace_status, AceStatus.SOFT)
 	
-	def test_hard_ace(self):
+	def test_hard_going_past_21(self):
 		"""
-		Test if ACE is converted to be worth 1 if hand value goes over 21
-		It should flip the ace_status to HARD as well
+		Test if hand value goes past 21 when ace is hard
 		"""
 		self.hand.add_card(Card(Suit.CLUBS, Rank.NINE))
 		self.assertEqual(self.hand.ace_status, AceStatus.NO_ACE)
@@ -41,6 +41,12 @@ class HandTestCase(unittest.TestCase):
 		self.hand.add_card(Card(Suit.CLUBS, Rank.TWO))
 		self.assertEqual(self.hand.value, 12)
 		self.assertEqual(self.hand.ace_status, AceStatus.HARD)
+		self.hand.add_card(Card(Suit.CLUBS, Rank.EIGHT))
+		self.assertEqual(self.hand.value, 20)
+		self.assertEqual(self.hand.ace_status, AceStatus.HARD)
+		self.hand.add_card(Card(Suit.CLUBS, Rank.TWO))
+		self.assertEqual(self.hand.value, 22)
+		self.assertEqual(self.hand.ace_status, AceStatus.HARD)
 	
 	def test_no_ace(self):
 		"""
@@ -48,28 +54,23 @@ class HandTestCase(unittest.TestCase):
 		"""
 		self.assertEqual(self.hand.ace_status, AceStatus.NO_ACE)
 		self.hand.add_card(Card(Suit.CLUBS, Rank.TEN))
+		self.assertEqual(self.hand.value, 10)
 		self.assertEqual(self.hand.ace_status, AceStatus.NO_ACE)
 		self.hand.add_card(Card(Suit.CLUBS, Rank.NINE))
+		self.assertEqual(self.hand.value, 10+9)
 		self.assertEqual(self.hand.ace_status, AceStatus.NO_ACE)
 		self.hand.add_card(Card(Suit.CLUBS, Rank.EIGHT))
-		self.assertEqual(self.hand.ace_status, AceStatus.NO_ACE)
 		self.assertEqual(self.hand.value, 10+9+8)
+		self.assertEqual(self.hand.ace_status, AceStatus.NO_ACE)
 	
-	def test_two_aces(self):
+	def test_many_aces(self):
 		"""
-		Test if two aces are added to hand
-		"""
-		self.hand.add_card(Card(Suit.CLUBS, Rank.ACE))
-		self.hand.add_card(Card(Suit.CLUBS, Rank.ACE))
-		self.assertEqual(self.hand.value, 12)
-		self.assertEqual(self.hand.ace_status, AceStatus.HARD)
-
-	def test_three_aces(self):
-		"""
-		Test if three aces are added to hand
+		Test that ace value is 1 when hand goes past 21 
 		"""
 		self.hand.add_card(Card(Suit.CLUBS, Rank.ACE))
-		self.hand.add_card(Card(Suit.CLUBS, Rank.ACE))
-		self.hand.add_card(Card(Suit.CLUBS, Rank.ACE))
-		self.assertEqual(self.hand.value, 13)
-		self.assertEqual(self.hand.ace_status, AceStatus.HARD)
+		self.assertEqual(self.hand.value, 11)
+		expected_value = 12
+		for i in range(20):
+			self.hand.add_card(Card(Suit.CLUBS, Rank.ACE))
+			self.assertEqual(self.hand.value, expected_value+i)
+			self.assertEqual(self.hand.ace_status, AceStatus.HARD)
