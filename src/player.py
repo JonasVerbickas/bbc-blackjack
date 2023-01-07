@@ -46,8 +46,10 @@ class Player:
 
     def get_bet(self) -> None:
         """Gets the bet from the player using CLI"""
+        print("!===== NEW ROUND =====!")
+        
         bet = None
-        while bet is None or (bet > self.balance or bet <= config.MIN_BET):
+        while bet is None or (bet > self.balance or bet < config.MIN_BET):
             try:
                 bet = int(
                     input(

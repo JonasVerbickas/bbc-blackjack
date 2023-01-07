@@ -66,7 +66,6 @@ class Dealer(Player):
         Returns the move the dealer "wants to" make.
         Utilizes a constant for how much the dealer wants to hit.
         """
-        self.hide_card = False
         if self.hand.value < config.DEALER_STAND_THRESHOLD:
             return PlayerChoice.HIT
         else:

@@ -28,7 +28,7 @@ class BlackJack:
         """
         # 1. allow player to hit until they stand or bust
         while player.hand.value < config.BLACKJACK and player.get_move() == PlayerChoice.HIT:
-            self.hit(self.player)
+            self.hit(player)
             # sleep for 0.5 seconds if dealer is hitting for a dramatic effect
             if player.__class__.__name__ == "Dealer":
                 time.sleep(0.5)
@@ -74,6 +74,7 @@ class BlackJack:
         if self.player.hand.value > config.BLACKJACK:
             return RoundOutcome.DEALER_WON
         # 5. If player stands, allow dealer to hit until they stand or bust
+        self.dealer.hide_card = False
         self.allow_to_hit(self.dealer)
         # 6. If dealer busts, player wins
         if self.dealer.hand.value > config.BLACKJACK:
