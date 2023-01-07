@@ -18,6 +18,18 @@ class Rank(Enum):
     QUEEN = 12
     KING = 13
 
+    def short_unicode_repr(self):
+        if self == Rank.ACE:
+            return 'A'
+        elif self == Rank.JACK:
+            return 'J'
+        elif self == Rank.QUEEN:
+            return 'Q'
+        elif self == Rank.KING:
+            return 'K'
+        else:
+            return str(self.value)
+
     def __str__(self):
         return self.name
 

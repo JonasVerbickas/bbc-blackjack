@@ -9,8 +9,13 @@ class Suit(Enum):
     HEARTS = 3
     SPADES = 4
 
+    def short_unicode_repr(self):
+        map_to_unicode = "♠♦♥♣"
+        return map_to_unicode[self.value-1]
+
     def __str__(self):
-        return self.name
+        return self.short_unicode_repr()
 
     def __repr__(self):
-        return self.name
+        return self.__str__()
+
