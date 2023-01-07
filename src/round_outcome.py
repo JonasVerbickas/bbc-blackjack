@@ -1,7 +1,9 @@
 from enum import Enum
 
+
 class RoundOutcome(Enum):
     """A player status has a name and a value."""
+
     BLACKJACK = 0
     PLAYER_WON = 1
     DEALER_WON = 2

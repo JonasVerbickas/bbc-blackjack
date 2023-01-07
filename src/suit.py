@@ -15,11 +15,10 @@ class Suit(Enum):
         (it also helps if a reduce the amount of printed text whenever debugging lists of cards)
         """
         map_to_unicode = "♠♦♥♣"
-        return map_to_unicode[self.value-1]
+        return map_to_unicode[self.value - 1]
 
     def __str__(self) -> str:
         return self.short_unicode_repr()
 
     def __repr__(self) -> str:
         return self.__str__()
-

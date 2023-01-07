@@ -12,16 +12,16 @@ class BlackJack:
     def __init__(self):
         self.dealer = Dealer()
         self.player = Player("Player 1")
-    
+
     def hit(self, player: Player) -> Card:
         """
-        Allows the player to hit 
+        Allows the player to hit
         """
         dealt_card = self.dealer.deal_card()
         print(f"{player.name} hits and gets {dealt_card}")
         player.hand.add_card(dealt_card)
         return dealt_card
-    
+
     def allow_to_hit(self, player: Player) -> int:
         """
         Allows the player to hit until they stand or bust
@@ -34,25 +34,25 @@ class BlackJack:
                 time.sleep(0.5)
             self.draw_board()
         return player.hand.value
-    
+
     def draw_board(self):
         """
         Use to create stable visual representation of the game board.
         That clears the screen before drawing the board.
         """
-        os.system('cls' if os.name == 'nt' else 'clear')
+        os.system("cls" if os.name == "nt" else "clear")
         self.player.print_ascii_hand_with_score()
-        print("="*50)
+        print("=" * 50)
         self.dealer.print_ascii_hand_with_score()
         print(f"Player's bet: {self.player.bet}")
-    
+
     def deal_cards(self):
         """
         Deals the initial cards to the dealer and player.
         """
         self.dealer.set_hand(self.dealer.deal_hand())
         self.player.set_hand(self.dealer.deal_hand())
- 
+
     def play_round(self):
         """
         Plays a round of blackjack by collecting the bet and allowing the player to hit until they stand or bust.
@@ -62,7 +62,7 @@ class BlackJack:
         # 1. Initialize hands
         self.deal_cards()
         self.draw_board()
-        # 2. Check if player has blackjack 
+        # 2. Check if player has blackjack
         if self.player.hand.value == config.BLACKJACK:
             if self.player.hand.value == self.dealer.hand.value:
                 return RoundOutcome.TIE
@@ -85,7 +85,7 @@ class BlackJack:
             return RoundOutcome.PLAYER_WON
         else:
             return RoundOutcome.TIE
-    
+
     def update_player_balance(self, outcome: RoundOutcome):
         """
         Updates the player's bank based on the outcome of the round
@@ -98,6 +98,7 @@ class BlackJack:
             self.player.balance -= self.player.bet
         else:
             pass
+
 
 def play():
     """
@@ -115,5 +116,5 @@ def play():
             break
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     play()

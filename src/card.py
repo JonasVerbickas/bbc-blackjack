@@ -21,7 +21,7 @@ class Card:
             return min(self.rank.value, 10)
 
     def __str__(self) -> str:
-        return self.suit.short_unicode_repr() + self.rank.short_unicode_repr() 
+        return self.suit.short_unicode_repr() + self.rank.short_unicode_repr()
 
     def __repr__(self) -> str:
         return self.__str__()

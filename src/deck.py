@@ -6,6 +6,7 @@ import random
 
 class Deck:
     """A deck has a list of cards and can deal a card."""
+
     def __init__(self):
         self.cards = self.generate_shuffled_list_of_cards()
 
@@ -18,9 +19,9 @@ class Deck:
                 cards.append(card)
         random.shuffle(cards)
         return cards
-    
+
     def deal_card(self) -> Card:
         return self.cards.pop()
-    
+
     def __len__(self):
         return len(self.cards)
