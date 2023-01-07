@@ -5,6 +5,11 @@ from src.rank import Rank
 from src.suit import Suit
 
 class HandTestCase(unittest.TestCase):
+	"""
+	These tests were designed with regular blackjack rules in mind.
+	Altering the blackjack rules may cause these tests to fail
+	e.g. changing the threshold for a blackjack to be something other than 21.
+	"""
 	
 	def setUp(self):  # this method will be run before each test
 		self.hand = Hand()

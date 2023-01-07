@@ -1,11 +1,12 @@
 from .hand import Hand
 from .player_choice import PlayerChoice
 from .card import Card
+from . import config 
 
 class Player:
     def __init__(self, name: str):
         self.name = name
-        self.balance = 100
+        self.balance = config.INITIAL_BALANCE
         self.bet = 0
         self.hand: Hand = None
 

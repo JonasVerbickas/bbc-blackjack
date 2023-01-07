@@ -3,7 +3,7 @@ from .hand import Hand
 from .card import Card
 from .player import Player
 from .player_choice import PlayerChoice
-from .config import DEALER_STAND_THRESHOLD
+from . import config
 
 
 class Dealer(Player):
@@ -48,7 +48,7 @@ class Dealer(Player):
     
     def get_move(self) -> PlayerChoice:
         self.hide_card = False
-        if self.hand.value < DEALER_STAND_THRESHOLD:
+        if self.hand.value < config.DEALER_STAND_THRESHOLD:
             return PlayerChoice.HIT
         else:
             return PlayerChoice.STAND

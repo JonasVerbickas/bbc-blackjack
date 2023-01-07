@@ -8,6 +8,7 @@ import os
 
 class RoundOutcome(Enum):
     """A player status has a name and a value."""
+    BLACKJACK = 0
     PLAYER_WON = 1
     DEALER_WON = 2
     TIE = 3
@@ -56,7 +57,7 @@ class BlackJack:
             if self.player.hand.value == self.dealer.hand.value:
                 return RoundOutcome.TIE
             else:
-                return RoundOutcome.PLAYER_WON
+                return RoundOutcome.BLACKJACK
 
         # 2. If not, allow player to hit until they stand or bust
         self.allow_to_hit(self.player)
@@ -82,7 +83,9 @@ class BlackJack:
     
     def update_player_balance(self, outcome: RoundOutcome):
         """Updates the player's bank based on the outcome of the round"""
-        if outcome == RoundOutcome.PLAYER_WON:
+        if outcome == RoundOutcome.BLACKJACK:
+            self.player.balance += int(self.player.bet * config.BLACKJACK_MULTIPLIER)
+        elif outcome == RoundOutcome.PLAYER_WON:
             self.player.balance += self.player.bet
         elif outcome == RoundOutcome.DEALER_WON:
             self.player.balance -= self.player.bet
@@ -92,11 +95,15 @@ class BlackJack:
 def play():
     """Plays a game of blackjack"""
     game = BlackJack()
-    for _ in range(5):
+    for _ in range(config.NUMBER_OF_ROUNDS):
         outcome = game.play_round()
         print(outcome)
         game.update_player_balance(outcome)
         print("New player's balance: ", game.player.balance)
+        if game.player.balance <= 0:
+            print("You're out of money!")
+            print("Game over!")
+            break
 
 
 if __name__ == '__main__':

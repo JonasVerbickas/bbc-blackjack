@@ -1,11 +1,12 @@
 from .card import Card
 from .rank import Rank
 from enum import Enum
+from . import config
 
 class AceStatus(Enum):
-    NO_ACE = 0
-    SOFT = 1
-    HARD = 2
+    NO_ACE = 1
+    SOFT = 2
+    HARD = 3
 
 class Hand:
     def __init__(self):
@@ -18,7 +19,7 @@ class Hand:
         self.value += card.get_value()
         if card.rank == Rank.ACE:
             self.ace_status = AceStatus.SOFT
-        if self.ace_status == AceStatus.SOFT and self.value > 21:
+        if self.ace_status == AceStatus.SOFT and self.value > config.BLACKJACK:
             self.value -= 10
             self.ace_status = AceStatus.HARD
         self.cards.append(card)
