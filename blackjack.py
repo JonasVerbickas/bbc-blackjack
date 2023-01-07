@@ -23,11 +23,11 @@ class BlackJack:
     def __init__(self):
         self.dealer = Dealer()
         self.player = Player("Player 1")
-        
+
     def allow_to_hit(self, player: Player) -> int:
         """Allows the player to hit until they stand or bust"""
         # 1. allow player to hit until they stand or bust
-        while player.hand.value < config.BLACKJACK and player.get_input() == PlayerChoice.HIT:
+        while player.hand.value < config.BLACKJACK and player.get_move() == PlayerChoice.HIT:
             dealt_card = self.dealer.deal_card()
             print(f"{player.name} hits and gets {dealt_card}")
             player.hand.add_card(dealt_card)
@@ -42,9 +42,11 @@ class BlackJack:
         os.system('cls' if os.name == 'nt' else 'clear')
         print(f"Player's hand:\n{self.player.ascii_hand()}")
         print(f"Dealer's hand:\n{self.dealer.ascii_hand()}")
+        print(f"Player's bet: {self.player.bet}")
  
     def play_round(self):
         """Plays a round of blackjack"""
+        self.player.get_bet()
         # 0. Initialize hands
         self.dealer.new_hand(self.dealer.deal_hand())
         self.player.new_hand(self.dealer.deal_hand())
@@ -77,14 +79,25 @@ class BlackJack:
             return RoundOutcome.PLAYER_WON
         else:
             return RoundOutcome.TIE
-
-
+    
+    def update_player_balance(self, outcome: RoundOutcome):
+        """Updates the player's bank based on the outcome of the round"""
+        if outcome == RoundOutcome.PLAYER_WON:
+            self.player.balance += self.player.bet
+        elif outcome == RoundOutcome.DEALER_WON:
+            self.player.balance -= self.player.bet
+        else:
+            pass
 
 def play():
     """Plays a game of blackjack"""
     game = BlackJack()
-    outcome = game.play_round()
-    print(outcome)
+    for _ in range(5):
+        outcome = game.play_round()
+        print(outcome)
+        game.update_player_balance(outcome)
+        print("New player's balance: ", game.player.balance)
+
 
 if __name__ == '__main__':
     play()

@@ -7,11 +7,11 @@ from .config import DEALER_STAND_THRESHOLD
 
 
 class Dealer(Player):
-    """In my implementation Dealer is just another player that has infinite bankroll and a deck of cards"""
+    """In my implementation Dealer is just another player that has infinite balance and a deck of cards"""
 
     def __init__(self):
         super().__init__("Dealer")
-        self.bankroll = float('inf')
+        self.balance = float('inf')
         self.deck = Deck()
         self.hide_card = True
 
@@ -46,7 +46,7 @@ class Dealer(Player):
     def deal_card(self) -> Card:
         return self.deck.deal_card()
     
-    def get_input(self) -> PlayerChoice:
+    def get_move(self) -> PlayerChoice:
         self.hide_card = False
         if self.hand.value < DEALER_STAND_THRESHOLD:
             return PlayerChoice.HIT
